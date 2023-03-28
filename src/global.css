@@ -9,6 +9,9 @@ html {
    font-family: 'Open Sans', Helvetica, sans-serif;
    font-size: 62.5%;
 }
+body {
+   /* background-color: #333; */
+}
 a {
    text-decoration: none;
    color: inherit;
@@ -27,20 +30,44 @@ button.disable {
 li {
    list-style: none;
 }
-
+input[type=checkbox] {
+   scale: 1.2;
+}
+input {
+   font-size: 1.8rem;
+   padding: 6px 4px;
+}
+label {
+   font-size: 1.8rem;
+}
 .container {
   max-width: 66.6667%;
    margin: 0 auto;
 }
+.df {
+   display: flex;
+}
+.atc {
+align-items: center;
+}
+.jcsb{
+   justify-content: space-between;
+}
+.tac {
+   text-align: center;
+}
+.ma{
+   margin: 0 auto !important;
+}
 .row {
    display: flex;
    flex-wrap: wrap;
-   margin-left: -6px;
-   margin-right: -6px;
+   margin-left: -10px;
+   margin-right: -10px;
 }
 .col {
-   padding-left: 6px;
-   padding-right: 6px;
+   padding-left: 10px;
+   padding-right: 10px;
 }
 .col-full {
    width: 100%;
