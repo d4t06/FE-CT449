@@ -1,8 +1,8 @@
 <script setup>
 import Button from "../components/Button.vue";
 import { watchEffect, reactive, onMounted, ref } from "vue";
-import { useRoute } from "vue-router";
-import { getContact } from "../services/contactServices";
+import { useRoute, useRouter } from "vue-router";
+import { deleteContact, getContact, updateContact } from "../services/contactServices";
 
 const data = reactive({
   name: "",
@@ -13,6 +13,7 @@ const data = reactive({
 });
 
 const route = useRoute();
+const router = useRouter();
 
 
 watchEffect(async() => {
@@ -24,6 +25,18 @@ const response = await getContact(route.params.id);
   data.email = response[0].email;
   data.favorite = response[0].favorite;
 });
+
+
+const handleEdit = async() => {
+  const response = await updateContact(route.params.id ,data);
+  router.go(-1)
+}
+
+const handleDelete = async() => {
+  const response = await deleteContact(route.params.id);
+  router.go(-1)
+}
+
 </script>
 
 <template>
@@ -52,8 +65,8 @@ const response = await getContact(route.params.id);
       </div>
     </div>
     <div class="cta">
-      <Button center> Xác nhận </Button>
-      <Button> Xóa </Button>
+      <Button center :onClick="() => handleEdit()"> Xác nhận </Button>
+      <Button :onClick="() => handleDelete()"> Xóa </Button>
     </div>
   </div>
 </template>

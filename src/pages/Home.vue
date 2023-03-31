@@ -1,9 +1,11 @@
 <script setup>
-import { watchEffect, ref, computed } from "vue";
+import { watchEffect, ref, computed, onMounted } from "vue";
 import Button from "../components/Button.vue";
 import Search from "../components/Search.vue";
 import { useContactStore } from "../store/store";
 import { getAllAndStoring } from "../store/actions";
+import { destroyContact } from "../services/contactServices";
+import { storeToRefs } from "pinia";
 
 const store = useContactStore();
 const curIndex = ref(0);
@@ -12,26 +14,30 @@ const handleGetContacts = () => {
   store.loading();
   curIndex.value = 0;
   setTimeout(() => {
-    getAllAndStoring(store);
+    const response = getAllAndStoring(store);
   }, 500);
 };
 
-watchEffect(() => {
-  if ((store.status = "idle")) {
+const handleDestroy = async() => {
+  const response = await destroyContact();
+  console.log(response)
+}
+
+
+
+onMounted(() => {
+  if (store.status === "idle") {
     handleGetContacts();
   }
 });
 
-const activeContact = computed(() => store?.contacts[curIndex.value])
+console.log("store.contacts =", store.contacts);
 
-const order = [
-  "Tên",
-  "E-mail",
-  "Địa chỉ",
-  "Số điện thoại",
-  "Liên hệ yêu thích",
-];
-console.log(store.contacts);
+const activeContact = computed(() => store?.contacts[curIndex.value])
+const {status, contacts} = storeToRefs(store)
+
+
+
 </script>
 
 <template>
@@ -44,15 +50,16 @@ console.log(store.contacts);
           <h1>Danh bạ</h1>
         </div>
         <ul class="contact-list mt10">
-          <h2 v-if="store.status === 'loading'" class="tac mt10">Loading...</h2>
+          <h2 v-if="status === 'loading'" class="tac mt10">Loading...</h2>
           <li
-            v-else
-            v-for="(contact, index) in store.contacts"
+            v-if="contacts.length && status !== 'loading'"
+            v-for="(contact, index) in contacts"
             @click="() => curIndex = index"
             :class="['contact-item', { active: curIndex === index }]"
           >
             {{ contact?.name }}
           </li>
+          <h2 v-if="!contacts && status !== 'loading'" class="tac mt10">No contacts</h2>
         </ul>
         <div class="cta df jcsb">
           <Button class="refresh" :onClick="() => handleGetContacts()">
@@ -63,7 +70,7 @@ console.log(store.contacts);
             <i class="material-icons">add</i>
             Thêm mới
           </Button>
-          <Button class="delete">
+          <Button class="delete" :onClick="() => handleDestroy()">
             <i class="material-icons">delete</i>
             Xóa Tất cả
           </Button>
@@ -75,9 +82,8 @@ console.log(store.contacts);
           <i class="material-icons">assignment_ind</i>
           <h1>Chi tết liên hệ</h1>
         </div>
-
-        <h2 v-if="store.status === 'loading'" class="mt10 tac">Loading...</h2>
-        <table v-else class="info-table">
+        <h2 v-if="status === 'loading'" class="mt10 tac">Loading...</h2>
+        <table v-if="contacts.length && status !== 'loading'" class="info-table">
           <tbody>
             <tr>
               <td>Tên:</td>
@@ -97,14 +103,14 @@ console.log(store.contacts);
             </tr>
             <tr>
               <td>Liên hệ yêu thích</td>
-              <td v-if="activeContact.favorite"> Yes </td>
+              <td v-if="activeContact?.favorite"> Yes </td>
               <td v-else> No </td>
             </tr>
           </tbody>
         </table>
 
-        <div v-if="store.status !== 'loading'" class="cta tac">
-          <Button center :to="`/edit/${activeContact._id}`">
+        <div v-if="status !== 'loading' && store.contacts" class="cta tac">
+          <Button center :to="`/edit/${activeContact?._id}`">
             <i class="material-icons">edit</i>
             Hiệu chỉnh
           </Button>

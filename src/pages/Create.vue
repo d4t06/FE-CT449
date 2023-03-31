@@ -1,11 +1,14 @@
 <script setup>
 import Button from "../components/Button.vue";
 import { defineProps, reactive } from "vue";
+import { useRouter } from "vue-router";
 import { createContact } from "../services/contactServices";
 
 const props = defineProps({
   data: Object,
 });
+
+const router = useRouter()
 
 const data = reactive({
   name: "",
@@ -15,9 +18,10 @@ const data = reactive({
   favorite: false,
 });
 
-const handleSubmit = () => {
-  // console.log('handlesubmit')
+const handleSubmit = async() => {
   createContact(data);
+  router.go(-1);
+
 };
 </script>
 

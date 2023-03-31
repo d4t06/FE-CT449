@@ -11,7 +11,10 @@ export const useContactStore = defineStore("ContactStore", {
         },
         useContactStoring (payload) {
             console.log('action pinia payload', payload)
-            this.contacts = payload.contacts
+            this.contacts = payload.contacts.length
+             ? payload.contacts
+             : ''
+            // this.contacts = payload.contacts
             this.status= 'successful'
         },
         error () {

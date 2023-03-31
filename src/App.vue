@@ -1,6 +1,5 @@
 <script setup>
-import Header from "./components/Header/Header.vue";
-import Search from "./components/Search.vue";
+import Header from "./components/Header.vue";
 </script>
 
 <template>
