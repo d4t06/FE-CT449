@@ -5,8 +5,11 @@ export const getAllAndStoring = async(piniaActions) => {
 
     try {
         const response = await contactServices.getContacts();
-        // console.log('action res:', response)
-        piniaActions.useContactStoring({contacts: response})
+
+        if (!response || response.status === 431) {
+            
+        }
+        piniaActions.useContactStoring({contacts: response.data})
 
     } catch (error) {
         console.log("action error", error)

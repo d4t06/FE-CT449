@@ -3,37 +3,25 @@ import { ref, watch } from "vue";
 import debounce from "lodash.debounce";
 
 const contactName = ref("");
+const isLoading = ref(false)
 
 const saveSearchChange = debounce(() => {
   console.log("call api");
 }, 800);
 
 watch(contactName, saveSearchChange);
+
 </script>
 
 <template>
-  <div className="search">
+  <div class="search">
     <input
-      className="input"
+      class="input"
       type="text"
       placeholder="Hôm nay bạn muốn tìm gì..."
       v-model="contactName"
     />
-    <!-- {loading && query && (
-                  <button className='loading-btn'>
-                     {/* <FontAwesomeIcon icon={faSpinner} /> */}
-                  </button>
-               
-               {!loading && query && (
-                  <button
-                     className='clear-btn'
-                     onClick={(e) => handleClear(e
-                  >
-                     {/* <FontAwesomeIcon icon={faCircleXmark} /> */}
-                  </button>
-                -->
-    <button className="search-btn">
-      <!-- <span class="ti-search"></span> -->
+    <button class="search-btn">
       <i class="material-icons">search</i>
     </button>
   </div>
@@ -106,4 +94,5 @@ watch(contactName, saveSearchChange);
     transform: rotate(360deg);
   }
 }
+
 </style>

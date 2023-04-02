@@ -22,23 +22,23 @@ const props = defineProps({
 
 <style lang="scss">
 
-  .button {
-    display: inline-flex;
-    align-items: center;
-    padding: 10px;
-    border-radius: 4px;
-    font-size: 1.6rem;
-    font-weight: 500;
-    border: 2px solid #333;
-    background-color: transparent;
-    transition: .1s linear;
-    &:hover {
-      background-color: #666;
-      color: #fff;
-      border-color: transparent;
-    }
-}
-.button + .button {
-  margin-left: 15px;
-}
+//   .button {
+//     display: inline-flex;
+//     align-items: center;
+//     padding: 10px;
+//     border-radius: 4px;
+//     font-size: 1.6rem;
+//     font-weight: 500;
+//     border: 2px solid #333;
+//     background-color: transparent;
+//     transition: .1s linear;
+//     &:hover {
+//       background-color: #666;
+//       color: #fff;
+//       border-color: transparent;
+//     }
+// }
+// .button + .button {
+//   margin-left: 15px;
+// }
 </style>
