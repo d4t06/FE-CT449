@@ -2,12 +2,19 @@ import { defineStore } from "pinia";
 
 export const useContactStore = defineStore("ContactStore", {
     state: () => ({
-        contacts: []    }),
+        contacts: [],
+        status: ''    
+    }),
     actions: {
-        useContactStoring (payload) {
-            this.contacts = payload.contacts.length
-             ? payload.contacts
-             : ''
+        loading () {
+            this.status = 'loading'
         },
+        useContactStoring (payload) {
+            this.contacts = payload.contacts || ''
+            this.status = payload.status || ''
+        },
+        error() {
+            this.status = 'error'
+        }
     }
 })

@@ -10,7 +10,7 @@
          const response = await request.get(`/contacts`)
          return response
       } catch (error) {
-         console.log("loi getProducts services", {message: error});
+         console.log("contact services error", {message: error});
       }
    };
 
@@ -21,7 +21,7 @@
          return response
 
       } catch (error) {
-         console.log("loi getProducts services", {message: error});
+         console.log("contact services error", {message: error});
       }
    };
 
@@ -31,7 +31,7 @@
          const response = await request.put(`/contacts/${id}`, data)
          return response;
       } catch (error) {
-         console.log("loi getProducts services", {message: error});
+         console.log("contact services error", {message: error});
       }
    };
 
@@ -41,7 +41,7 @@
          const response = await request.delete(`/contacts/${id}`)
          return response
       } catch (error) {
-         console.log("loi getProducts services", {message: error});
+         console.log("contact services error", {message: error});
       }
    };
 
@@ -51,7 +51,7 @@
          const response = await request.delete(`/contacts`)
          return response;
       } catch (error) {
-         console.log("loi getProducts services", {message: error});
+         console.log("contact services error", {message: error});
       }
    };
 
@@ -62,6 +62,6 @@
          return response
 
       } catch (error) {
-         console.log("loi getProducts services", {message: error});
+         console.log("contact services error", {message: error});
       }
    };
