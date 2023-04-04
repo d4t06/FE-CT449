@@ -56,7 +56,7 @@
    };
 
    export const createContact = async (data) => {
-      
+      console.log("data service = ", data);
       try {
          const response = await request.post(`/contacts`, data)
          return response

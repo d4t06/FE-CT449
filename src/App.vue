@@ -8,7 +8,3 @@ import Header from "./components/Header.vue";
     <RouterView/>
   </div>
 </template>
-
-<style scoped lang="scss">
-
-</style>

@@ -32,8 +32,14 @@ const props = defineProps({
          </tr>
          <tr>
             <td>Yêu thích</td>
-            <td v-if="contact?.favorite">Yes</td>
-            <td v-else>No</td>
+            <td>
+               <i
+                  style="color: green"
+                  v-if="contact.favorite"
+                  class="material-icons"
+                  >check</i
+               >
+            </td>
          </tr>
       </tbody>
    </table>

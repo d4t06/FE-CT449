@@ -1,16 +1,13 @@
 <script setup>
 import { defineProps, reactive } from "vue";
 import { useRouter } from "vue-router";
-import {Form, Field} from 'vee-validate'
+import {Form, Field, ErrorMessage} from 'vee-validate'
 import Button from "../components/Button.vue";
 import * as contactServices from "../services/contactServices";
 
 const props = defineProps({
    data: Object,
 });
-
-const router = useRouter();
-
 const data = reactive({
    name: "",
    address: "",
@@ -18,58 +15,52 @@ const data = reactive({
    email: "",
    favorite: false,
 });
+const router = useRouter();
 
 const handleSubmit = async () => {
-  contactServices.createContact(data);
-  confirm("Tạo mới danh bạ thành công");
-  router.go(-1);
+   await contactServices.createContact(data);
+   alert("Tạo mới danh bạ thành công");
+   router.go(-1);
 };
-const validateEmail = (value) => {
-      // if the field is empty
-      if (!value) {
-        return 'This field is required';
-      }
 
-      // if the field is not a valid email
-      const regex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
-      if (!regex.test(value)) {
-        return 'This field must be a valid email';
-      }
-
-      // All is good
+const isRequired = (value) => {
+   if (value && value.trim()) {
       return true;
+   }
+   return 'This field is required';
 }
-
 </script>
 
 <template>
    <div class="edit-page mt-10 col-half">
       <h1>Thêm mới liên hệ</h1>
-      <Form class="form df">
+      <Form @submit="handleSubmit" class="form df">
          <div class="input-group df">
             <label for="">Tên</label>
-            <Field name="name" v-model="data.name" type="text" />
+            <Field name="name" v-model="data.name" type="text" :rules="isRequired"/>
+            <ErrorMessage name="name"/>
          </div>
          <div class="input-group df">
             <label for="">E-mail</label>
-            <Field name="email" v-model="data.email" type="text" :rules="validateEmail"/>
+            <input name="email" v-model="data.email" type="text"/>
          </div>
          <div class="input-group df">
             <label for="">Địa chỉ</label>
-            <Field name="address" v-model="data.address" type="text" />
+            <input name="address" v-model="data.address" type="text" />
          </div>
          <div class="input-group df">
             <label for="">Điện thoại</label>
-            <Field name="phone" v-model="data.phone" type="text" />
+            <Field name="phone" v-model="data.phone" type="text" :rules="isRequired"/>
+            <ErrorMessage name="phone"/>
          </div>
          <div class="input-group, favorite-input">
-            <Field name="favorite" v-model="data.favorite" type="checkbox" />
+            <input v-model="data.favorite" type="checkbox" />
             <label for="">Liên hệ yêu thích</label>
          </div>
+         <div class="cta">
+            <Button center> Xác nhận </Button>
+         </div>
       </Form>
-      <div class="cta">
-         <Button center :onClick="() => handleSubmit()"> Xác nhận </Button>
-      </div>
    </div>
 </template>
 
@@ -84,6 +75,10 @@ const validateEmail = (value) => {
    .input-group {
       flex-direction: column;
       gap: 5px;
+      span {
+         font-size: 1.6rem;
+         color: rgb(247, 54, 54);
+      }
    }
 }
 .cta {

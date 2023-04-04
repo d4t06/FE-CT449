@@ -1,8 +1,9 @@
 <script setup>
-import Button from "../components/Button.vue";
-import { watchEffect, reactive } from "vue";
+import { watchEffect, reactive, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
+import { Form, Field, ErrorMessage } from "vee-validate";
 import * as contactServices from "../services/contactServices";
+import Button from "../components/Button.vue";
 
 const data = reactive({
    name: "",
@@ -11,41 +12,65 @@ const data = reactive({
    email: "",
    favorite: false,
 });
-
 const route = useRoute();
 const router = useRouter();
+const isLoading = ref(false);
+const isHasData = ref(false);
 
 watchEffect(async () => {
    try {
+      isLoading.value = true;
       const response = await contactServices.getContact(route.params.id);
-      data.name = response[0].name;
-      data.phone = response[0].phone;
-      data.address = response[0].address;
-      data.email = response[0].email;
-      data.favorite = response[0].favorite;
+
+      if (response.data) {
+         data.name = response.data[0].name;
+         data.phone = response.data[0].phone;
+         data.address = response.data[0].address;
+         data.email = response.data[0].email;
+         data.favorite = response.data[0].favorite;
+         isHasData.value = true;
+      }
    } catch (error) {
       console.log("edit page error", { message: error });
+   } finally {
+      isLoading.value = false;
    }
 });
 
 const handleEdit = async () => {
+   if (!data.name.trim() || !data.phone.trim()) return;
    await contactServices.updateContact(route.params.id, data);
+   alert("Đã cập nhận liện hệ");
    router.go(-1);
 };
 
-const handleDelete = async () => {
-   await contactServices.deleteContact(route.params.id);
-   router.go(-1);
+const handleDelete = async (e) => {
+   if (confirm("Bạn muốn xóa liên hệ nay ?")) {
+      await contactServices.deleteContact(route.params.id);
+      router.go(-1);
+   }
+};
+const isRequired = (value) => {
+   if (value && value.trim()) {
+      return true;
+   }
+   return "This field is required";
 };
 </script>
 
 <template>
-   <div v-if="data.name" class="edit-page mt-10 col-half">
+   <div class="edit-page mt-10 col-half">
       <h1>Hiệu chỉnh liên hệ</h1>
-      <div class="form df">
+      <Form class="form df" @submit="" action="">
          <div class="input-group df">
             <label for="">Tên</label>
-            <input v-model="data.name" type="text" />
+            <Field
+               name="name"
+               v-model="data.name"
+               type="text"
+               :rules="isRequired"
+            />
+            <ErrorMessage name="name" />
          </div>
          <div class="input-group df">
             <label for="">E-mail</label>
@@ -57,20 +82,27 @@ const handleDelete = async () => {
          </div>
          <div class="input-group df">
             <label for="">Điện thoại</label>
-            <input v-model="data.phone" type="text" />
+            <Field
+               name="phone"
+               v-model="data.phone"
+               type="text"
+               :rules="isRequired"
+            />
+            <ErrorMessage name="phone" />
          </div>
          <div class="input-group, favorite-input">
             <input v-model="data.favorite" type="checkbox" />
             <label for="">Liên hệ yêu thích</label>
          </div>
-      </div>
-      <div class="mt15">
-         <Button center :onClick="() => handleEdit()"> Xác nhận </Button>
-         <Button :onClick="() => handleDelete()"> Xóa </Button>
-      </div>
+         <div class="mt15">
+            <Button center :onClick="() => handleEdit()"> Xác nhận </Button>
+            <Button :onClick="() => handleDelete()"> Xóa </Button>
+         </div>
+      </Form>
    </div>
-   <div v-else class="mt15">
+   <div v-if="!isHasData && !isLoading" class="mt15">
       <h1>Đã có lỗi xảy ra...</h1>
+      <br />
       <Button :onClick="() => router.go(-1)">Quay về</Button>
    </div>
 </template>
@@ -86,6 +118,10 @@ const handleDelete = async () => {
    .input-group {
       flex-direction: column;
       gap: 5px;
+      span {
+         font-size: 1.6rem;
+         color: rgb(247, 54, 54);
+      }
    }
 }
 .favorite-input {

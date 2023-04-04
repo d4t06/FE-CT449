@@ -24,7 +24,9 @@ const activeContact = computed(() => store?.contacts[curIndex.value]);
 const { status, contacts } = storeToRefs(store);
 
 const handleDestroy = async () => {
-   await destroyContact();
+   if (confirm("Bạn muốn xóa tất cả liên hệ ?")) {
+      await destroyContact();
+   }
 };
 </script>
 
@@ -54,7 +56,7 @@ const handleDestroy = async () => {
                </h2>
             </ul>
             <div class="cta df jcsb">
-               <Button class="refresh" :onClick="() => handleGetContacts()">
+               <Button class="refresh" :disable="!(contacts.length)" :onClick="() => handleGetContacts()">
                   <i class="material-icons">refresh</i>
                   Làm mới
                </Button>
@@ -62,7 +64,7 @@ const handleDestroy = async () => {
                   <i class="material-icons">add</i>
                   Thêm mới
                </Button>
-               <Button class="delete" :onClick="() => handleDestroy()">
+               <Button class="delete" :disable="!(contacts.length)" :onClick="() => handleDestroy()">
                   <i class="material-icons">delete</i>
                   Xóa Tất cả
                </Button>

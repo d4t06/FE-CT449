@@ -1,4 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600&display=swap');
 * {
    margin: 0;
@@ -20,7 +19,7 @@ button {
    cursor: pointer;
    border: none;
 }
-button.disable {
+button.disable, a.disable {
    opacity: .6;
    pointer-events: none;
 }
