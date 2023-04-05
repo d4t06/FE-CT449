@@ -41,7 +41,7 @@ const handleEdit = async () => {
    if (!data.name.trim() || !data.phone.trim()) return;
    await contactServices.updateContact(route.params.id, data);
    alert("Đã cập nhận liện hệ");
-   router.go(-1);
+   router.push('/');
 };
 
 const handleDelete = async (e) => {
@@ -61,7 +61,7 @@ const isRequired = (value) => {
 <template>
    <div class="edit-page mt-10 col-half">
       <h1>Hiệu chỉnh liên hệ</h1>
-      <Form class="form df" @submit="" action="">
+      <Form class="form df mt15">
          <div class="input-group df">
             <label for="">Tên</label>
             <Field
@@ -70,7 +70,7 @@ const isRequired = (value) => {
                type="text"
                :rules="isRequired"
             />
-            <ErrorMessage name="name" />
+            <ErrorMessage name="name"></ErrorMessage>
          </div>
          <div class="input-group df">
             <label for="">E-mail</label>
@@ -88,15 +88,15 @@ const isRequired = (value) => {
                type="text"
                :rules="isRequired"
             />
-            <ErrorMessage name="phone" />
+            <ErrorMessage name="phone"></ErrorMessage>
          </div>
          <div class="input-group, favorite-input">
-            <input v-model="data.favorite" type="checkbox" />
-            <label for="">Liên hệ yêu thích</label>
+            <input id="favorite" v-model="data.favorite" type="checkbox" />
+            <label for="favorite">Liên hệ yêu thích</label>
          </div>
          <div class="mt15">
-            <Button center :onClick="() => handleEdit()"> Xác nhận </Button>
-            <Button :onClick="() => handleDelete()"> Xóa </Button>
+            <Button center :onClick="handleEdit"> Xác nhận </Button>
+            <Button :onClick="handleDelete"> Xóa </Button>
          </div>
       </Form>
    </div>
@@ -111,22 +111,6 @@ const isRequired = (value) => {
 .edit-page {
    margin: 30px auto 0;
 }
-.form {
-   flex-direction: column;
-   gap: 15px;
-   margin-top: 10px;
-   .input-group {
-      flex-direction: column;
-      gap: 5px;
-      span {
-         font-size: 1.6rem;
-         color: rgb(247, 54, 54);
-      }
-   }
-}
-.favorite-input {
-   input {
-      margin-right: 10px;
-   }
-}
+
+@import './css/form.scss'
 </style>

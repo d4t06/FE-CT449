@@ -1,5 +1,4 @@
 <script setup>
-import { defineProps } from "vue";
 import Button from "./Button.vue";
 
 const props = defineProps({
@@ -10,12 +9,16 @@ const props = defineProps({
 <template>
    <div class="title">
       <i class="material-icons">assignment_ind</i>
-      <h1>Chi tết liên hệ</h1>
+      <h1>Chi tiết liên hệ</h1>
    </div>
    <table class="info-table">
+      <thead>
+         <tr></tr>
+         <tr></tr>
+      </thead>
       <tbody>
          <tr>
-            <td>Tên:</td>
+            <td style="width: 30%">Tên:</td>
             <td>{{ contact?.name }}</td>
          </tr>
          <tr>
@@ -23,7 +26,7 @@ const props = defineProps({
             <td>{{ contact?.address }}</td>
          </tr>
          <tr>
-            <td>E-mail</td>
+            <td>Email</td>
             <td>{{ contact?.email }}</td>
          </tr>
          <tr>
@@ -34,7 +37,7 @@ const props = defineProps({
             <td>Yêu thích</td>
             <td>
                <i
-                  style="color: green"
+                  style="color: green; font-weight: 600; font-size: 30px"
                   v-if="contact.favorite"
                   class="material-icons"
                   >check</i
@@ -62,10 +65,12 @@ const props = defineProps({
       margin-top: -10px;
    }
    td {
-      padding: 10px 7px;
+      height: 40px;
+      padding: 0 8px;
       font-size: 1.5rem;
       font-weight: 500;
       color: #000;
+      text-align: left;
    }
 }
 </style>

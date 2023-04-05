@@ -5,11 +5,4 @@ const request = axios.create({
    withCredentials: true,
 });
 
-export const register = async (data) => {
-   try {
-      const response = await request.post("/auth/register", data);
-      return response;
-   } catch (error) {
-      console.log("register services error", { message: error });
-   }
-};
+export default request;

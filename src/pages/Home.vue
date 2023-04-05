@@ -26,6 +26,7 @@ const { status, contacts } = storeToRefs(store);
 const handleDestroy = async () => {
    if (confirm("Bạn muốn xóa tất cả liên hệ ?")) {
       await destroyContact();
+      handleGetContacts()
    }
 };
 </script>

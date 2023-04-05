@@ -1,24 +1,34 @@
-<script type="text/javascript" setup>
+<script setup>
 import { ref, watch } from "vue";
 import debounce from "lodash.debounce";
 import { useContactStore } from "../store/store";
-import * as searchService from '../services/searchService'
+import * as searchService from "../services/searchService";
 
-const store = useContactStore()
+const store = useContactStore();
 const key = ref("");
 const isLoading = ref(false);
 
-const saveSearchChange = debounce( async() => {
-  // if (!key.value) return
-  isLoading.value = true;
+const fetchAndStoring = async () => {
+   const response = await searchService.search({ q: key.value });
+   store.useContactStoring({ contacts: response.data, status: "successful" });
+};
 
-  const response = await searchService.search({'q': key.value});
-  store.useContactStoring({contacts: response.data, status: 'successful'})
-  isLoading.value = false;
-
+const saveSearchChange = debounce(async () => {
+   isLoading.value = true;
+   setTimeout(() => {
+      fetchAndStoring();
+      isLoading.value = false;
+   }, 1000);
 }, 800);
 
-watch(key, saveSearchChange);
+watch(key, () => {
+   console.log("key = ", key.value);
+   if (key.value) {
+      saveSearchChange();
+   } else {
+      fetchAndStoring();
+   }
+});
 
 const handleClear = () => {
    key.value = "";
@@ -33,7 +43,11 @@ const handleClear = () => {
          placeholder="Hôm nay bạn muốn tìm gì..."
          v-model="key"
       />
-      <button v-if="key && !isLoading" class="clear-btn" @click="() => handleClear()">
+      <button
+         v-if="key && !isLoading"
+         class="clear-btn"
+         @click="() => handleClear()"
+      >
          <i class="material-icons">cancel</i>
       </button>
       <button v-if="isLoading" class="loading-btn">
@@ -102,7 +116,7 @@ const handleClear = () => {
    font-size: 1.8rem;
 }
 .loading-btn {
-   // animation: spinner 1.5s linear infinite;
+   animation: spinner 1.5s linear infinite;
 }
 
 @keyframes spinner {

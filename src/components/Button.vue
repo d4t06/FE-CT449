@@ -1,10 +1,8 @@
 <script setup>
-import { defineProps } from "vue";
 import { RouterLink } from "vue-router";
 
 const props = defineProps({
    onClick: Function,
-   center: Boolean,
    disable: Boolean,
    to: String
 });
@@ -17,7 +15,7 @@ const props = defineProps({
    </RouterLink>
    <button
       v-else
-      :class="['button', { center, disable}]"
+      :class="['button', {disable}]"
       @click="onClick ? onClick() : ''"
    >
       <slot />

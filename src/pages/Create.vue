@@ -1,5 +1,5 @@
 <script setup>
-import { defineProps, reactive } from "vue";
+import { reactive } from "vue";
 import { useRouter } from "vue-router";
 import {Form, Field, ErrorMessage} from 'vee-validate'
 import Button from "../components/Button.vue";
@@ -20,7 +20,7 @@ const router = useRouter();
 const handleSubmit = async () => {
    await contactServices.createContact(data);
    alert("Tạo mới danh bạ thành công");
-   router.go(-1);
+   router.push('/');
 };
 
 const isRequired = (value) => {
@@ -34,7 +34,7 @@ const isRequired = (value) => {
 <template>
    <div class="edit-page mt-10 col-half">
       <h1>Thêm mới liên hệ</h1>
-      <Form @submit="handleSubmit" class="form df">
+      <Form @submit="handleSubmit" class="form df mt15">
          <div class="input-group df">
             <label for="">Tên</label>
             <Field name="name" v-model="data.name" type="text" :rules="isRequired"/>
@@ -54,11 +54,11 @@ const isRequired = (value) => {
             <ErrorMessage name="phone"/>
          </div>
          <div class="input-group, favorite-input">
-            <input v-model="data.favorite" type="checkbox" />
-            <label for="">Liên hệ yêu thích</label>
+            <input id="favorite" v-model="data.favorite" type="checkbox" />
+            <label for="favorite">Liên hệ yêu thích</label>
          </div>
          <div class="cta">
-            <Button center> Xác nhận </Button>
+            <Button> Xác nhận </Button>
          </div>
       </Form>
    </div>
@@ -68,25 +68,5 @@ const isRequired = (value) => {
 .edit-page {
    margin: 30px auto 0;
 }
-.form {
-   flex-direction: column;
-   gap: 15px;
-   margin-top: 10px;
-   .input-group {
-      flex-direction: column;
-      gap: 5px;
-      span {
-         font-size: 1.6rem;
-         color: rgb(247, 54, 54);
-      }
-   }
-}
-.cta {
-   margin-top: 15px;
-}
-.favorite-input {
-   input {
-      margin-right: 10px;
-   }
-}
+@import './css/form.scss'
 </style>
